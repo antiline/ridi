@@ -10,9 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  check-rain-show-point:
     runs-on: ubuntu-latest
-
 
     steps:
       - name: Setup repo
