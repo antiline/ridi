@@ -1,8 +1,9 @@
 name: Check rain show point
 
 on:
-  push:
-    branches: ["main"]
+  schedule:
+    # https://crontab.guru
+    - cron: '55 8 * * *'
 
 permissions:
   contents: read
