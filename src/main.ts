@@ -57,7 +57,7 @@ export const getRainSnowDayPoint = async (url: string, accessToken: string) => {
 	await requestToRidi(url, { accessToken });
 };
 
-export const findRainSnowDayPointNotification = async (accessToken: string): Notification | undefined => {
+export const findRainSnowDayPointNotification = async (accessToken: string): Promise<Notification | undefined> => {
 	const notifications = await getNotifications(accessToken);
 	return notifications.find((it) => it.message.indexOf('오는 날 포인트') !== -1);
 };
@@ -68,10 +68,12 @@ export const sendToSlack = async (message: string) => {
 		throw new Error('SLACK_WEBHOOK_URL is not set');
 	}
 
-	await fetch(slackWebhookUrl, {
+	const res = await fetch(slackWebhookUrl, {
 		body: JSON.stringify({ 'text': message }),
 		method: 'POST',
-	}).text();
+	})
+
+	return res.text();
 };
 
 const handler = async () => {
@@ -85,8 +87,8 @@ const handler = async () => {
 	const rainSnowDayPointNotification = await findRainSnowDayPointNotification(accessToken);
 
 	if (rainSnowDayPointNotification) {
-		await getRainSnowDayPoint(point.landingUrl, accessToken);
-		await sendToSlack();
+		await getRainSnowDayPoint(rainSnowDayPointNotification.landingUrl, accessToken);
+		await sendToSlack('오늘의 눈비 포인트를 받았습니다.');
 	}
 };
 
