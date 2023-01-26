@@ -54,7 +54,7 @@ export const getNotifications = async (accessToken: string): Promise<Notificatio
 };
 
 export const getRainSnowDayPoint = async (url: string, accessToken: string) => {
-	await requestToRidi(url, { accessToken });
+	await requestToRidi(url, { accessToken, contentType: 'text/html' });
 };
 
 export const findRainSnowDayPointNotification = async (accessToken: string): Promise<Notification | undefined> => {
